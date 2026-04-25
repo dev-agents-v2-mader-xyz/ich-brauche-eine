@@ -1,0 +1,38 @@
+name: Deploy (image already built)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy existing image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            cd ${{ secrets.DEPLOY_PATH }}
+            docker compose pull backend
+            docker compose up -d --no-deps --remove-orphans backend
+
+      - name: Health check
+        run: |
+          for i in 1 2 3 4 5 6 7 8; do
+            status=$(curl -s -o /dev/null -w "%{http_code}" https://ich-brauche-eine.mader.xyz/health)
+            if [ "$status" = "200" ]; then
+              echo "Health check passed"
+              exit 0
+            fi
+            echo "Attempt $i: got $status, retrying..."
+            sleep 5
+          done
+          echo "Health check failed"
+          exit 1
