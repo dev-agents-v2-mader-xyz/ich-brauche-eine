@@ -1,0 +1,12 @@
+[workspace]
+members = ["crates/backend", "crates/ui", "crates/frontend", "crates/app", "tools/csv_import"]
+resolver = "2"
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+tokio = { version = "1", features = ["full"] }
+thiserror = "1"
+tracing = "0.1"

@@ -1,0 +1,27 @@
+{
+  "productName": "Ich brauche eine",
+  "version": "0.1.0",
+  "identifier": "xyz.mader.ich-brauche-eine",
+  "build": {
+    "frontendDist": "../../../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Ich brauche eine",
+        "width": 390,
+        "height": 844,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; connect-src 'self' https://xoryyknrowwsodrdjtua.supabase.co; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": []
+  }
+}

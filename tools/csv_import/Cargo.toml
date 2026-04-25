@@ -1,0 +1,16 @@
+[package]
+name = "csv_import"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "csv_import"
+path = "src/main.rs"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+sqlx = { version = "0.8", features = ["runtime-tokio-rustls", "postgres", "macros"] }
+csv = "1"
+serde = { version = "1", features = ["derive"] }
+clap = { version = "4", features = ["derive"] }
+dotenvy = "0.15"
