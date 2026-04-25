@@ -17,8 +17,16 @@ services:
       LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
     networks:
       - reverse-proxy
+      - outbound
 
 networks:
   reverse-proxy:
     external: true
     name: ${DOCKER_NETWORK}
+  outbound:
+    driver: bridge
+    enable_ipv6: true
+    ipam:
+      config:
+        - subnet: "172.30.0.0/24"
+        - subnet: "fd00:b1be::/64"
