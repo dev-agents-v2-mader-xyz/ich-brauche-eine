@@ -1,4 +1,4 @@
-use crate::auth::{load_email_from_storage, load_token_from_storage, AuthAction, AuthState};
+use crate::auth::{load_email_from_storage, load_token_from_storage, AuthState};
 use crate::components::nav::Nav;
 use crate::pages::history::HistoryPage;
 use crate::pages::home::HomePage;

@@ -5,7 +5,7 @@ use crate::components::log_entry::LogEntry;
 use crate::components::modal::Modal;
 use crate::components::progress_bar::ProgressBar;
 use crate::routes::Route;
-use crate::types::{DrinkEntry, DrinkType, TodayResponse};
+use crate::types::{DrinkType, TodayResponse};
 use crate::utils::caffeine_color;
 use yew::prelude::*;
 use yew_router::prelude::*;
