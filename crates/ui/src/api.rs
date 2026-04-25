@@ -3,6 +3,7 @@ use crate::types::*;
 #[cfg(target_arch = "wasm32")]
 use gloo_net::http::Request;
 
+#[cfg(target_arch = "wasm32")]
 fn auth_header(token: &str) -> String {
     format!("Bearer {}", token)
 }

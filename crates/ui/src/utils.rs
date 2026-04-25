@@ -5,7 +5,7 @@ pub fn caffeine_color(total: i32, limit: i32) -> &'static str {
     let limit = if limit <= 0 { DEFAULT_DAILY_LIMIT } else { limit };
     if total > limit * 350 / 400 {
         "danger"
-    } else if total > limit / 2 {
+    } else if total >= limit / 2 {
         "warning"
     } else {
         "safe"
