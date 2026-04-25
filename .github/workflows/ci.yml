@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+  SQLX_OFFLINE: true
+
+jobs:
+  test:
+    name: Test & Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: cargo clippy
+        run: cargo clippy --workspace --exclude frontend --exclude ui -- -D warnings
+
+      - name: cargo test (backend + tools)
+        run: cargo test --workspace --exclude frontend --exclude ui
+
+      - name: Install Trunk + wasm target
+        run: |
+          rustup target add wasm32-unknown-unknown
+          cargo install trunk wasm-bindgen-cli
+
+      - name: trunk build (web frontend)
+        run: |
+          cd crates/frontend
+          trunk build --release --public-url /
+        # Tauri desktop/mobile builds are excluded from CI.
+        # They require native OS environments and are handled on tagged releases.
+
+      - name: cargo audit
+        run: |
+          cargo install cargo-audit --quiet
+          cargo audit

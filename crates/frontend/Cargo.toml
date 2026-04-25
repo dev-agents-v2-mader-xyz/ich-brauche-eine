@@ -1,0 +1,13 @@
+[package]
+name = "frontend"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "frontend"
+path = "src/main.rs"
+
+[dependencies]
+ui = { path = "../ui" }
+yew = { version = "0.21", features = ["csr"] }
+tracing-wasm = "0.2"

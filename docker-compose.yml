@@ -1,0 +1,24 @@
+services:
+  backend:
+    image: ghcr.io/${GITHUB_ORG}/ich-brauche-eine:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
+      SUPABASE_DB_URL: ${SUPABASE_DB_URL}
+      SUPABASE_JWT_SECRET: ${SUPABASE_JWT_SECRET}
+      SUPABASE_SCHEMA: ${SUPABASE_SCHEMA:-public}
+      RUST_LOG: ${RUST_LOG:-info}
+      VIRTUAL_HOST: ich-brauche-eine.${SERVER_DOMAIN}
+      LETSENCRYPT_HOST: ich-brauche-eine.${SERVER_DOMAIN}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+    networks:
+      - reverse-proxy
+
+networks:
+  reverse-proxy:
+    external: true
+    name: ${DOCKER_NETWORK}

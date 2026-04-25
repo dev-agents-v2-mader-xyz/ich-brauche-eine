@@ -1,0 +1,49 @@
+## Development compose: backend hot-reload + Trunk build worker
+## Started by the Director via Docker socket when a project is created.
+## AGENT_WORKSPACE_HOST_PATH: host-side path to the projects dir (passed via env).
+services:
+
+  backend-dev:
+    image: openclaw/agent-runtime:latest
+    container_name: ich-brauche-eine-backend
+    working_dir: /projects/ich-brauche-eine/crates/backend
+    command: cargo watch -x run
+    environment:
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
+      SUPABASE_DB_URL: ${SUPABASE_DB_URL}
+      SUPABASE_JWT_SECRET: ${SUPABASE_JWT_SECRET}
+      SUPABASE_SCHEMA: app_ich-brauche-eine
+      RUST_LOG: ${RUST_LOG:-debug}
+      ROCKET_ADDRESS: 0.0.0.0
+      ROCKET_PORT: 8000
+    volumes:
+      - ${AGENT_WORKSPACE_HOST_PATH}:/projects
+      - projects-dist:/projects-dist
+    networks:
+      - openclaw_internal
+
+  build-worker:
+    image: openclaw/build-worker:latest
+    container_name: ich-brauche-eine-build-worker
+    working_dir: /projects/ich-brauche-eine/crates/frontend
+    entrypoint: /build-worker/entrypoint.sh
+    environment:
+      PROJECT_NAME: "ich-brauche-eine"
+      HUB_BACKEND_URL: http://hub-backend:8000
+      HUB_AGENT_SECRET: ${HUB_AGENT_SECRET}
+      PUBLIC_URL: /p/ich-brauche-eine/
+    volumes:
+      - ${AGENT_WORKSPACE_HOST_PATH}:/projects
+      - projects-dist:/projects-dist
+    networks:
+      - openclaw_internal
+
+volumes:
+  projects-dist:
+    external: true
+
+networks:
+  openclaw_internal:
+    external: true
+    name: openclaw_internal
