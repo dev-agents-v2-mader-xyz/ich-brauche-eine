@@ -32,7 +32,7 @@ jobs:
       - name: Install Trunk + wasm target
         run: |
           rustup target add wasm32-unknown-unknown
-          cargo install trunk wasm-bindgen-cli
+          cargo install trunk
 
       - name: trunk build (web frontend)
         run: |
