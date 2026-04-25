@@ -1,15 +1,15 @@
 ## Stage 1: Build WASM frontend
-FROM rust:1.78-slim AS wasm-builder
+FROM rust:1.86-slim AS wasm-builder
 RUN apt-get update && apt-get install -y curl pkg-config libssl-dev && rm -rf /var/lib/apt/lists/*
 RUN rustup target add wasm32-unknown-unknown
-RUN cargo install trunk wasm-bindgen-cli
+RUN cargo install trunk wasm-bindgen-cli@0.2.118
 WORKDIR /app
 COPY . .
 WORKDIR /app/crates/frontend
 RUN trunk build --release --public-url /
 
 ## Stage 2: Build backend
-FROM rust:1.78-slim AS backend-builder
+FROM rust:1.86-slim AS backend-builder
 RUN apt-get update && apt-get install -y pkg-config libssl-dev && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY . .
