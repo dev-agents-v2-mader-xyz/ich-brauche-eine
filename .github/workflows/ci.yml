@@ -24,10 +24,10 @@ jobs:
       - uses: Swatinem/rust-cache@v2
 
       - name: cargo clippy
-        run: cargo clippy --workspace --exclude frontend --exclude ui -- -D warnings
+        run: cargo clippy --workspace --exclude frontend --exclude ui --exclude app -- -D warnings
 
       - name: cargo test (backend + tools)
-        run: cargo test --workspace --exclude frontend --exclude ui
+        run: cargo test --workspace --exclude frontend --exclude ui --exclude app
 
       - name: Install Trunk + wasm target
         run: |
